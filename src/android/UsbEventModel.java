@@ -99,6 +99,9 @@ final class UsbEventModel {
         JSONObject jsonDevice = new JSONObject();
         jsonDevice.put(PROPERTY_EVENT_KEY_VID, device.getVendorId());
         jsonDevice.put(PROPERTY_EVENT_KEY_PID, device.getProductId());
+
+		jsonDevice.put("isUvcCamera", isUvcCamera(device)); // add by crow
+
 //        jsonDevice.put(PROPERTY_EVENT_KEY_DEVICE_ID, device.getDeviceId());
 //        jsonDevice.put(PROPERTY_EVENT_KEY_DEVICE_NAME, device.getDeviceName());
 //        jsonDevice.put(PROPERTY_EVENT_KEY_PROTOCOL, device.getDeviceProtocol());
@@ -109,4 +112,15 @@ final class UsbEventModel {
 
     return jsonObject;
   }
+
+  // add by crow
+  private boolean isUvcCamera(UsbDevice device) {
+	  for(int i=0; i<device.getInterfaceCount(); i++) {
+		  if(device.getInterface(i).getInterfaceClass() == 0x0E) {
+			  return true;
+		  }
+	  }
+	  return false;
+  }
+
 }
